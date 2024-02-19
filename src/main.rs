@@ -43,7 +43,13 @@ fn main() -> Result<()> {
             );
         })?;
         if true {
-           todo!();
+            if let event::Event::Key(key) = event::read()? {
+                if key.kind == KeyEventKind::Press
+                    && key.code == KeyCode::Char('q')
+                {
+                    break;
+                }
+            }
         }
     }
 
