@@ -17,8 +17,8 @@ use bevy::app::AppExit;
 use bevy::prelude::*;
 
 use ratatui::{
-    prelude::{BevyBackend, RatatuiPlugin, Stylize, Terminal},
-    widgets::Paragraph,
+    prelude::{BevyBackend, RatatuiPlugin, Stylize, Terminal,Color,Style,*},
+    widgets::{Block,Paragraph,Borders,Gauge}
 };
 
 /// This is a bare minimum example. There are many approaches to running an application loop, so
@@ -61,6 +61,21 @@ fn terminal_draw(mut terminal_query:  Query<(&mut Terminal<BevyBackend>)>,) {
                 .on_blue(),
             area,
         );
+
+        frame.render_widget(
+            Gauge::default()
+    .block(Block::default().borders(Borders::ALL).title("Progress"))
+    .gauge_style(
+        Style::default()
+            .fg(Color::White)
+            .bg(Color::Black)
+            .add_modifier(Modifier::ITALIC),
+    )
+    .percent(20),
+            area,
+        );
+
+
     });
 }
 
