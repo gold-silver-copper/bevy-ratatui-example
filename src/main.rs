@@ -34,7 +34,8 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugins((RatatuiPlugin))
         .add_systems(Startup, camera_setup)
-        .add_systems(Update, (keyboard_input, terminal_draw))
+        .add_systems(PreUpdate, terminal_draw)
+        .add_systems(Update, (keyboard_input))
         .run();
 }
 
@@ -42,7 +43,7 @@ fn main() {
 fn camera_setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 
-    let mut my_terminal = Terminal::new(BevyBackend::new(10, 10)).unwrap();
+    let mut my_terminal = Terminal::new(BevyBackend::new(60, 20,40)).unwrap();
 
     my_terminal.clear();
 
