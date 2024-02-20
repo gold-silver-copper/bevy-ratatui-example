@@ -14,11 +14,13 @@
 //! [examples readme]: https://github.com/ratatui-org/ratatui/blob/main/examples/README.md
 
 use bevy::prelude::*;
+use bevy::app::AppExit;
+
 use ratatui::{
-    prelude::{BevyBackend, Stylize, Terminal},
+    prelude::{Terminal, BevyBackend},
     widgets::Paragraph,
 };
-use std::io::{stdout, Result};
+
 
 /// This is a bare minimum example. There are many approaches to running an application loop, so
 /// this is not meant to be prescriptive. It is only meant to demonstrate the basic setup and
@@ -28,31 +30,56 @@ use std::io::{stdout, Result};
 /// restored to a sane state before exiting. This example does not do that. It also does not handle
 /// events or update the application state. It just draws a greeting and exits when the user
 /// presses 'q'.
-fn main() -> Result<()> {
-    let mut terminal = Terminal::new(BevyBackend::new(5))?;
-    terminal.clear()?;
+fn main() {
+ 
 
-    loop {
-        terminal.draw(|frame| {
-            let area = frame.size();
-            frame.render_widget(
-                Paragraph::new("Hello Ratatui! (press 'q' to quit)")
-                    .white()
-                    .on_blue(),
-                area,
-            );
-        })?;
-        if true {
-            if let event::Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Press
-                    && key.code == KeyCode::Char('q')
-                {
-                    break;
-                }
-            }
-        }
+
+
+
+    App::new()
+    .add_plugins(DefaultPlugins)
+    //.add_plugins((RatatuiPlugin))
+    .add_systems(Startup, camera_setup)
+    .add_systems(Update, (keyboard_input,terminal_draw))
+    .run();
+
+}
+
+#[derive(Resource)]
+struct RatatuiTerminal{
+    terminal:Terminal
+}
+
+
+
+fn camera_setup(mut commands: Commands){
+
+    commands.spawn(Camera2dBundle::default());
+
+    let mut my_terminal = Terminal::new(BevyBackend::new())?;
+    my_terminal.clear()?;
+    commands.insert_resource(RatatuiTerminal{terminal: my_terminal});
+
+
+}
+
+fn terminal_draw(mut rat_term: ResMut<RatatuiTerminal>) {
+    rat_term.terminal.draw(|frame| {
+        let area = frame.size();
+        frame.render_widget(
+            Paragraph::new("Hello Ratatui! (press 'q' to quit)")
+                .white()
+                .on_blue(),
+            area,
+        );
+    })?;
+
+
+
+}
+
+fn keyboard_input(keys: Res<ButtonInput<KeyCode>>, mut exit: EventWriter<AppExit>) {
+    if keys.just_pressed(KeyCode::KeyQ) {
+        exit.send(AppExit);
     }
-
-
-    Ok(())
 }
