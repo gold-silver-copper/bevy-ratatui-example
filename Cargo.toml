@@ -6,6 +6,5 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
-crossterm = "0.27.0"
-ratatui = { git = "https://github.com/sbakhmet/ratatui.git", branch = "main", default-features = false, features = ["bevy"] }
+bevy = { version = "0.13.0",  default-features = true}
+ratatui = { path = "/Users/kisaczka/Desktop/ww/ratatui",  default-features = false, features = ["bevy"] }
