@@ -17,7 +17,7 @@ use bevy::app::AppExit;
 use bevy::prelude::*;
 
 use ratatui::{
-    prelude::{BevyBackend, Stylize, Terminal},
+    prelude::{BevyBackend, RatatuiPlugin, Stylize, Terminal},
     widgets::Paragraph,
 };
 
@@ -32,7 +32,7 @@ use ratatui::{
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        //.add_plugins((RatatuiPlugin))
+        .add_plugins((RatatuiPlugin))
         .add_systems(Startup, camera_setup)
         .add_systems(Update, (keyboard_input, terminal_draw))
         .run();
