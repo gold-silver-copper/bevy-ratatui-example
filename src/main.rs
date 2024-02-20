@@ -13,14 +13,13 @@
 //! [examples]: https://github.com/ratatui-org/ratatui/blob/main/examples
 //! [examples readme]: https://github.com/ratatui-org/ratatui/blob/main/examples/README.md
 
-use bevy::prelude::*;
 use bevy::app::AppExit;
+use bevy::prelude::*;
 
 use ratatui::{
-    prelude::{Terminal, BevyBackend, Stylize},
+    prelude::{BevyBackend, Stylize, Terminal},
     widgets::Paragraph,
 };
-
 
 /// This is a bare minimum example. There are many approaches to running an application loop, so
 /// this is not meant to be prescriptive. It is only meant to demonstrate the basic setup and
@@ -31,36 +30,27 @@ use ratatui::{
 /// events or update the application state. It just draws a greeting and exits when the user
 /// presses 'q'.
 fn main() {
- 
-
-
-
-
     App::new()
-    .add_plugins(DefaultPlugins)
-    //.add_plugins((RatatuiPlugin))
-    .add_systems(Startup, camera_setup)
-    .add_systems(Update, (keyboard_input,terminal_draw))
-    .run();
-
+        .add_plugins(DefaultPlugins)
+        //.add_plugins((RatatuiPlugin))
+        .add_systems(Startup, camera_setup)
+        .add_systems(Update, (keyboard_input, terminal_draw))
+        .run();
 }
 
 #[derive(Resource)]
-struct RatatuiTerminal{
-    terminal:Terminal<BevyBackend>
+struct RatatuiTerminal {
+    terminal: Terminal<BevyBackend>,
 }
 
-
-
-fn camera_setup(mut commands: Commands){
-
+fn camera_setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 
-    let mut my_terminal = Terminal::new(BevyBackend::new(10,10)).unwrap();
+    let mut my_terminal = Terminal::new(BevyBackend::new(10, 10)).unwrap();
     my_terminal.clear();
-    commands.insert_resource(RatatuiTerminal{terminal: my_terminal});
-
-
+    commands.insert_resource(RatatuiTerminal {
+        terminal: my_terminal,
+    });
 }
 
 fn terminal_draw(mut rat_term: ResMut<RatatuiTerminal>) {
@@ -73,9 +63,6 @@ fn terminal_draw(mut rat_term: ResMut<RatatuiTerminal>) {
             area,
         );
     });
-
-
-
 }
 
 fn keyboard_input(keys: Res<ButtonInput<KeyCode>>, mut exit: EventWriter<AppExit>) {
