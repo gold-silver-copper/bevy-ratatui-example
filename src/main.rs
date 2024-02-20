@@ -38,23 +38,21 @@ fn main() {
         .run();
 }
 
-#[derive(Resource)]
-struct RatatuiTerminal {
-    terminal: Terminal<BevyBackend>,
-}
 
 fn camera_setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 
     let mut my_terminal = Terminal::new(BevyBackend::new(10, 10)).unwrap();
+
     my_terminal.clear();
-    commands.insert_resource(RatatuiTerminal {
-        terminal: my_terminal,
-    });
+
+    commands.spawn(my_terminal);
 }
 
-fn terminal_draw(mut rat_term: ResMut<RatatuiTerminal>) {
-    let _ = rat_term.terminal.draw(|frame| {
+fn terminal_draw(mut terminal_query:  Query<(&mut Terminal<BevyBackend>)>,) {
+
+    let mut rat_term = terminal_query.get_single_mut().expect("More than one terminal with a bevybackend");
+    let _ = rat_term.draw(|frame| {
         let area = frame.size();
         frame.render_widget(
             Paragraph::new("Hello Ratatui! (press 'q' to quit)")
