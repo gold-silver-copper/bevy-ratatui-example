@@ -53,6 +53,8 @@ fn camera_setup(mut commands: Commands) {
 
 fn terminal_draw(mut terminal_query:  Query<(&mut Terminal<BevyBackend>)>,) {
 
+    let text ="Hello Ratatui! (press 'q' to quit)  يسمح لزواره الكرام بتحويل الكتابة العربي الى كتابة مفهومة من قبل  ";
+
 
     
 
@@ -60,7 +62,7 @@ fn terminal_draw(mut terminal_query:  Query<(&mut Terminal<BevyBackend>)>,) {
     let _ = rat_term.draw(|frame| {
         let area = frame.size();
         frame.render_widget(
-            text::Line::from("Hello Ratatui! (press 'q' to quit)")
+            text::Line::from(text.reversed())
               ,
             area,
         );
