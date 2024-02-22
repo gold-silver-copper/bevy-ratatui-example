@@ -18,7 +18,8 @@ use bevy::prelude::*;
 
 use ratatui::{
     prelude::{BevyBackend, RatatuiPlugin, Stylize, Terminal,Color,Style,*},
-    widgets::{Block,Paragraph,Borders,Gauge}
+    widgets::*,
+    text::*
 };
 
 /// This is a bare minimum example. There are many approaches to running an application loop, so
@@ -43,7 +44,7 @@ fn main() {
 fn camera_setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 
-    let mut my_terminal = Terminal::new(BevyBackend::new(60, 20,40)).unwrap();
+    let mut my_terminal = Terminal::new(BevyBackend::new(60, 20,40, 0.5,"fonts/unifont.otf","fonts/unifont.otf","fonts/unifont.otf","fonts/unifont.otf")).unwrap();
 
     my_terminal.clear();
 
@@ -52,28 +53,19 @@ fn camera_setup(mut commands: Commands) {
 
 fn terminal_draw(mut terminal_query:  Query<(&mut Terminal<BevyBackend>)>,) {
 
+
+    
+
     let mut rat_term = terminal_query.get_single_mut().expect("More than one terminal with a bevybackend");
     let _ = rat_term.draw(|frame| {
         let area = frame.size();
         frame.render_widget(
-            Paragraph::new("Hello Ratatui! (press 'q' to quit)")
-                .white()
-                .on_blue(),
+            text::Line::from("Hello Ratatui! (press 'q' to quit)")
+              ,
             area,
         );
 
-        frame.render_widget(
-            Gauge::default()
-    .block(Block::default().borders(Borders::ALL).title("Progress"))
-    .gauge_style(
-        Style::default()
-            .fg(Color::White)
-            .bg(Color::Black)
-            .add_modifier(Modifier::ITALIC),
-    )
-    .percent(20),
-            area,
-        );
+  
 
 
     });
