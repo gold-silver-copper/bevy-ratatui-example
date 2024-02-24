@@ -48,7 +48,20 @@ fn camera_setup(mut commands: Commands) {
 
     my_terminal.clear();
 
-    commands.spawn(my_terminal);
+
+    bundle = NodeBundle {
+        style: Style {
+            width: Val::Percent(100.0),
+            height: Val::Percent(100.0),
+            justify_content: JustifyContent::SpaceBetween,
+            ..default()
+        },
+        ..default()
+    };
+    
+    
+
+    commands.spawn(my_terminal,bundle);
 }
 
 fn terminal_draw(mut terminal_query:  Query<(&mut Terminal<BevyBackend>)>,) {
