@@ -44,24 +44,16 @@ fn main() {
 fn camera_setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
 
-    let mut my_terminal = Terminal::new(BevyBackend::new(60, 20,40, "fonts/unifont.otf","fonts/unifont.otf","fonts/unifont.otf","fonts/unifont.otf")).unwrap();
+    let mut my_terminal = Terminal::new(BevyBackend::new(80, 30,40, "fonts/unifont.otf","fonts/unifont.otf","fonts/unifont.otf","fonts/unifont.otf")).unwrap();
 
-    my_terminal.clear();
+   // my_terminal.clear();
 
 
-    bundle = NodeBundle {
-        style: Style {
-            width: Val::Percent(100.0),
-            height: Val::Percent(100.0),
-            justify_content: JustifyContent::SpaceBetween,
-            ..default()
-        },
-        ..default()
-    };
+   
     
     
 
-    commands.spawn(my_terminal,bundle);
+    commands.spawn(my_terminal);
 }
 
 fn terminal_draw(mut terminal_query:  Query<(&mut Terminal<BevyBackend>)>,) {
@@ -75,7 +67,7 @@ fn terminal_draw(mut terminal_query:  Query<(&mut Terminal<BevyBackend>)>,) {
     let _ = rat_term.draw(|frame| {
         let area = frame.size();
         frame.render_widget(
-            text::Line::from(text.reversed())
+            text::Line::from(text)
               ,
             area,
         );
